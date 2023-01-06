@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include "Deleter.hpp"
 #include "Querier.hpp"
 #include "Register.hpp"
 
@@ -29,9 +30,11 @@ class Selector {
     void show_modes() {
         cout << "本字典可用功能如下：" << endl;
         cout << endl;
-        cout << "1. 添加/修改释义" << endl; // goto_register();
-        cout << "2. 查询单词" << endl;      // goto_querier();
-        cout << "3. 退出" << endl;          // exit();
+        cout << "1. 添加/修改释义" << endl;
+        cout << "2. 查询单词" << endl;
+        cout << "3. 删除单词" << endl;
+        cout << "4. 显示所有单词和释义" << endl;
+        cout << "5. 退出" << endl;
         cout << endl;
         cout << "请输入 `相应数字` 以做出选择 >>> ";
     }
@@ -40,6 +43,22 @@ class Selector {
     }
     void goto_querier() {
         Querier::query();
+    }
+    void goto_deleter() {
+        Deleter::delete_word();
+    }
+    void show_all() {
+        if (Resource::Dict->empty()) {
+            cout << "字典为空" << endl;
+            cout << endl;
+            return;
+        }
+        cout << "下面，为您显示当前字典中的 `所有` 单词和释义：" << endl;
+        cout << endl;
+        for (auto& [word, meaning] : *Resource::Dict) {
+            cout << word << " => " << meaning << endl;
+        }
+        cout << endl;
     }
     void get_mode() {
         while (true) {
@@ -52,6 +71,10 @@ class Selector {
             } else if (mode == "2") {
                 goto_querier();
             } else if (mode == "3") {
+                goto_deleter();
+            } else if (mode == "4") {
+                show_all();
+            } else if (mode == "5") {
                 cout << "谢谢使用!" << endl;
                 cout << endl;
                 exit(0);
